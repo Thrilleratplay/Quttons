@@ -1,10 +1,10 @@
 {
   "name": "quttons",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Buttons made of Quantum Paper",
   "main": "Quttons.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "uglify": "uglifyjs Quttons.js --screw-ie8 -m -c --comments -o Quttons.min.js"
   },
   "repository": {
     "type": "git",
