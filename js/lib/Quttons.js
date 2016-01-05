@@ -44,7 +44,6 @@
 			width : 60,
 			height : 60,
 			backgroundColor : "#EB1220",
-			icon : "", // Url of the icon that the button is supposed to hold
 			easing : 'easeInOutQuint'
 		};
 
@@ -53,18 +52,33 @@
 
 	// Initializes the click listeners on the qutton itself, document and close button
 	Qutton.prototype.init = function(quttonConfig) {
+		var qConfs;
 
 		deepExtend(this.quttonConfig, quttonConfig);
+		qConfs = Object.keys(this.quttonConfig);
 
 		this.$dialog[0].style.display = 'none';
 
 		// Set up the icon and other properties of the div
 		this.setIcon();
 
-		this.$container.style.width = this.quttonConfig.width + "px";
-		this.$container.style.height = this.quttonConfig.height + "px";
-		this.$container.style.backgroundColor = this.quttonConfig.backgroundColor;
-		this.$container.style.borderRadius = this.quttonConfig.height + "px";
+		for (var i = qConfs.length - 1; i >= 0; i--) {
+			if (['borderRadius', 'width', 'height'].indexOf(qConfs[i]) > -1) {
+				this.$container.style[qConfs[i]] = this.quttonConfig[qConfs[i]] + 'px';
+			} else {
+				this.$container.style[qConfs[i]] = this.quttonConfig[qConfs[i]];
+			}
+		}
+
+		if (!this.quttonConfig.borderRadius && this.quttonConfig.height) {
+			this.$container.style.borderRadius = this.quttonConfig.height + "px";
+		}
+
+		if (this.quttonConfig.fontClass) {
+			this.$container.classList.addMany(this.quttonConfig.fontClass);
+		} else if (this.quttonConfig.icon) {
+			this.$container.style.backgroundImage = 'url(' + this.quttonConfig.icon + ')';
+		}
 
 		// Initialize the event handlers
 		this.events.click.call(this);
@@ -93,13 +107,22 @@
 	};
 
 	Qutton.prototype.setIcon = function() {
-		this.$container.style.backgroundImage = 'url(' + this.quttonConfig.icon + ')';
 		this.$container.style.cursor = 'pointer';
+		if (this.quttonConfig.fontClass) {
+			this.$container.classList.addMany(this.quttonConfig.fontClass);
+		} else if (this.quttonConfig.icon) {
+			this.$container.style.backgroundImage = 'url(' + this.quttonConfig.icon + ')';
+		}
 	};
 
 	Qutton.prototype.removeIcon = function() {
-		this.$container.style.backgroundImage = 'none';
 		this.$container.style.cursor = 'auto';
+
+		if (this.quttonConfig.fontClass) {
+			this.$container.classList.removeMany(this.quttonConfig.fontClass);
+		} else if (this.quttonConfig.icon) {
+			this.$container.style.backgroundImage = 'none';
+		}
 	};
 
 	// Animates the button into dialog
@@ -328,4 +351,19 @@
   	}
   	return [];
 	};
+
+	// Source http://stackoverflow.com/questions/11115998/is-there-a-way-to-add-remove-several-classes-in-one-single-instruction-with-clas
+	DOMTokenList.prototype.addMany = function(classes) {
+    var array = classes.split(' ');
+    for (var i = 0, length = array.length; i < length; i++) {
+      this.add(array[i]);
+    }
+}
+
+DOMTokenList.prototype.removeMany = function(classes) {
+    var array = classes.split(' ');
+    for (var i = 0, length = array.length; i < length; i++) {
+      this.remove(array[i]);
+    }
+}
 })();

@@ -7,7 +7,7 @@
 	// For the upload button
 	var quttonUpload = Qutton.getInstance(document.querySelector('#qutton_upload'));
 	quttonUpload.init({
-		icon : './images/icon_upload.png',
+		fontClass: 'fa fa-upload',
 		backgroundColor : "#917466"
 	});
 
@@ -15,14 +15,14 @@
 	// For the delete button
 	var quttonDelete = Qutton.getInstance(document.querySelector('#qutton_delete'));
 	quttonDelete.init({
-		icon : './images/icon_delete.png',
+		fontClass: 'fa fa-trash',
 		backgroundColor : "#EB1220"
 	});
 
 	// For the Sharing button
 	var quttonComment= Qutton.getInstance(document.querySelector('#qutton_comment'));
 	quttonComment.init({
-		icon : './images/icon_comment.png',
+		fontClass: 'fa fa-comment',
 		backgroundColor : "#41AAF1"
 	});
 
